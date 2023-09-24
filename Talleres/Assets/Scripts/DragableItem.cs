@@ -14,9 +14,10 @@ public class DragableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     [HideInInspector] public ItemCategory category;
     [HideInInspector] public string information;
     [HideInInspector] public int damage;
-
+    ToolTip toolTip;
     private void Awake()
     {
+        toolTip = GetComponent<ToolTip>();
         image= GetComponent<Image>();
     }
     public void OnBeginDrag(PointerEventData eventData)
@@ -34,8 +35,11 @@ public class DragableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.SetParent(parentAfterDrag);
-        image.raycastTarget = true;
+        if(parentAfterDrag != null)
+        {
+            transform.SetParent(parentAfterDrag);
+            image.raycastTarget = true;
+        }
     }
     public void InitializeItem(string itemName, Sprite itemIcon, ItemCategory category, string information, int damage)
     {
@@ -45,5 +49,6 @@ public class DragableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         this.category = category;
         this.information = information;
         this.damage = damage;
+        toolTip.IniciatializeToolTip(this);
     }
 }
